@@ -1,12 +1,14 @@
 <?php
 
-use App\Http\Modulos\State\Controller\StateController;
+use App\Http\Modulos\Task\Controller\TaskController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('state', 'throttle:60,1')->group(function () {
-    Route::controller(StateController::class)->group(function () {
-        Route::post('crear', 'CrearState');
-        Route::get('listar', 'ListarState');
+Route::prefix('task', 'throttle:60,1')->group(function () {
+    Route::controller(TaskController::class)->group(function () {
+        Route::post('crear', 'CrearTask');
+        Route::get('listar', 'ListarTask');
+        Route::put('actualizar/{id}', 'actualizarTask');
+        Route::delete('eliminar/{id}', 'eliminarTask');
     }
 );
 }

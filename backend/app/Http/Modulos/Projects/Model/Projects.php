@@ -4,7 +4,7 @@ namespace App\Http\Modulos\Projects\Model;
 
 use App\Http\Modulos\State\Model\State;
 use App\Http\Modulos\Task\Model\Task;
-use App\Models\User;
+use App\Http\Modulos\User\Model\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

@@ -17,7 +17,23 @@ class ProjectsRepository
         return $listar;
     }
 
-    public function EditarProjecto(array $data){
-        return Projects::deleted($data);
+    public function actualizarProyecto(int $id, array $data) {
+        $proyecto = Projects::find($id);
+        if (!$proyecto) {
+            throw new \Exception("El proyecto no fue encontrado.");
+        }
+        $proyecto->update($data);
+        return $proyecto;
     }
+
+    public function eliminarProyecto(int $id)
+    {
+        $proyecto = Projects::find($id);
+        if ($proyecto) {
+            $proyecto->delete();
+            return true;
+        }
+        return false;
+    }
+
 }
