@@ -16,6 +16,7 @@
           <td>{{ item.dueDate || 'No especificada' }}</td>
           <td>{{ item.projectName || 'Sin proyecto' }}</td>
           <td>{{ item.userName || 'Sin usuario' }}</td>
+          <td>{{ item.estado || 'Sin estado' }}</td>
           <td>
             <v-btn @click="openEditModal(item)" icon>
               <i class="fas fa-pencil-alt"></i>
@@ -36,12 +37,7 @@
           <span class="headline">Agregar Nueva Tarea</span>
         </v-card-title>
         <v-card-text>
-          <AddTask 
-            @submit="createTask" 
-            @close="dialog = false" 
-            :projects="projects" 
-            :usuarios="usuarios" 
-          />
+          <AddTask @submit="createTask" @close="dialog = false" :projects="projects" :usuarios="usuarios" />
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -52,13 +48,8 @@
           <span class="headline">Editar Tarea</span>
         </v-card-title>
         <v-card-text>
-          <EditTask 
-            :task="selectedTask" 
-            :projects="projects" 
-            :usuarios="usuarios" 
-            @update="updateTask" 
-            @close="editDialog = false" 
-          />
+          <EditTask :task="selectedTask" :projects="projects" :usuarios="usuarios" :states="states" @update="updateTask"
+            @close="editDialog = false" />
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -82,6 +73,7 @@ export default {
         { text: 'Fecha de finalización', value: 'dueDate' },
         { text: 'Proyecto', value: 'projectName' },
         { text: 'Usuario', value: 'userName' },
+        { text: 'Estado', value: 'estado' },
         { text: 'Acciones', value: 'actions', sortable: false },
       ],
       tasks: [],
@@ -90,12 +82,14 @@ export default {
       selectedTask: null,
       projects: [],
       usuarios: [],
+      states: [],
     };
   },
   created() {
     this.fetchTasks();
     this.fetchProjects();
-    this.fetchUsers(); 
+    this.fetchUsers();
+    this.fetchStates();
   },
   methods: {
     async fetchTasks() {
@@ -114,6 +108,7 @@ export default {
             dueDate: task.fecha_final || 'No especificada',
             projectName: task.project || 'Sin proyecto',
             userName: task.user || 'Sin usuario',
+            estado: task.estado || 'Sin estado',
           }));
         }
       } catch (error) {
@@ -170,7 +165,8 @@ export default {
     },
     openEditModal(item) { // TRAE LA TAREA PARA EDITAR
       this.selectedTask = { ...item };
-      this.editDialog = true; 
+      this.selectedTask.estadoId = item.state_id;
+      this.editDialog = true;
     },
     async updateTask(updatedTask) {
       try {
@@ -190,6 +186,19 @@ export default {
         this.editDialog = false;
       } catch (error) {
         console.error('Error al actualizar la tarea:', error);
+      }
+    },
+    async fetchStates() {
+      try {
+        const response = await fetch('http://127.0.0.1:8000/api/state/listar');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        this.states = data; // Asegúrate de tener una propiedad states en el data()
+      } catch (error) {
+        console.error('Error al obtener estados:', error);
+        this.states = [];
       }
     },
     async deleteTask(id) {
