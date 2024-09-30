@@ -13,8 +13,8 @@ class ProjectsController extends Controller
 {
     public function __construct(private ProjectsRepository $projectsRepository) {}
 
-    public function CrearProjecto(Request $request)
-    { // FUNCION LLAMA AL REPOSITORY PARA CREAR EL PROYECTO
+    public function CrearProjecto(Request $request) //LLAMAMO A REPO PARA CREAR UN PROYECT
+    {
         try {
             $this->projectsRepository->CrearProjecto($request->all());
             return response()->json('Se ha creado con exito', Response::HTTP_CREATED);
@@ -23,8 +23,8 @@ class ProjectsController extends Controller
         }
     }
 
-    public function ListarProjecto(Request $request)
-    { // FUNCION LLAMA AL REPOSITORY PARA CREAR EL PROYECTO
+    public function ListarProjecto(Request $request)  // FUNCION LLAMA AL REPOSITORY PARA LISTAR LOS PROYECTS
+    {
         try {
             $listar =  $this->projectsRepository->ListarProjecto();
             return response()->json($listar);
@@ -33,7 +33,7 @@ class ProjectsController extends Controller
         }
     }
 
-    public function actualizarProyecto(Request $request, $id)
+    public function actualizarProyecto(Request $request, $id) //LLAMA AL REPO PARA  ACTUALIZAR UN PROYECT
     {
         try {
             $validatedData = $request->validate([
@@ -53,10 +53,10 @@ class ProjectsController extends Controller
         }
     }
 
-    public function eliminarProyecto($id)
+    public function eliminarProyecto($id) //LLAMA AL REPO PARA ELIMINAR UN PROYECT
     {
         try {
-            // Verificar si el proyecto tiene tareas asociadas
+            // Verifica si el proyecto tiene tareas asociadas
             $tareasCount = DB::table('tasks')->where('project_id', $id)->count();
 
             if ($tareasCount > 0) {

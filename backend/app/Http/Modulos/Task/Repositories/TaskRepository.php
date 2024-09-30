@@ -11,17 +11,29 @@ class TaskRepository
     }
 
     public function ListarTask() {
-        return Task::select('id', 'nombre', 'descripcion')->get();
+        return Task::with(['project', 'user'])
+            ->select('id', 'nombre', 'descripcion', 'fecha_final', 'project_id', 'user_id')
+            ->get();
     }
 
+
+
     public function actualizarTask(int $id, array $data) {
-        $proyecto = Task::find($id);
-        if (!$proyecto) {
+        $task = Task::find($id);
+        if (!$task) {
             throw new \Exception("La tarea no fue encontrada.");
         }
-        $proyecto->update($data);
-        return $proyecto;
+        $task->update([
+            'nombre' => $data['nombre'],
+            'descripcion' => $data['descripcion'],
+            'fecha_final' => $data['fecha_final'],
+            'project_id' => $data['project_id'],
+            'user_id' => $data['user_id'],
+        ]);
+
+        return $task;
     }
+
 
     public function eliminarTask(int $id)
     {

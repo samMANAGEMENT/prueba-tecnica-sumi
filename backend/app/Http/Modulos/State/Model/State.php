@@ -9,5 +9,5 @@ class State extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['id', 'nombre'];
+    protected $fillable = ['id', 'nombre']; //SOLO PIDE ID Y NOMBRE
 }

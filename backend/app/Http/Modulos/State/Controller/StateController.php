@@ -14,7 +14,7 @@ class StateController extends Controller
     {
     }
 
-    public function CrearState(Request $request) {
+    public function CrearState(Request $request) { //CREA ESTADO
         try {
             $validatedData = $request->validate([
                 'nombre' => 'required|string|max:255',
@@ -27,7 +27,7 @@ class StateController extends Controller
         }
     }
 
-    public function ListarState(Request $request) {
+    public function ListarState(Request $request) {//TRAE ESTADO
         try {
             $listar = $this->projectsRepository->ListarState();
             return response()->json($listar);
@@ -36,9 +36,7 @@ class StateController extends Controller
         }
     }
 
-
-
-    public function actualizarState(Request $request, $id) {
+    public function actualizarState(Request $request, $id) { //ACTUALIZA ESTADO
         try {
             $validatedData = $request->validate([
                 'nombre' => 'required|string|max:255',
@@ -53,7 +51,7 @@ class StateController extends Controller
         }
     }
 
-    public function eliminarState($id)
+    public function eliminarState($id) //ELIMINA ESTADO
     {
         try {
             $eliminado = $this->projectsRepository->eliminarState($id);

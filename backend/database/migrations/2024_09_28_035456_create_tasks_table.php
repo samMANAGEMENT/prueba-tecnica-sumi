@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('descripcion');
             $table->date('fecha_inicio');
             $table->date('fecha_final');
-            $table->foreignId('project_id')->constrained('projects');
+            $table->foreignId('project_id')->constrained('projects'); //CREA ID Y COMO FORANEA USERS
             $table->timestamps();
         });
     }

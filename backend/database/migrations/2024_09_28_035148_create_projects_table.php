@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('descripcion');
             $table->date('fecha_inicio');
             $table->date('fecha_final');
-            $table->foreignId('estado_id')->constrained('states');
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('estado_id')->constrained('states'); //CREA ID Y COMO FORANEA TABLA STATES
+            $table->foreignId('user_id')->constrained('users'); //CREA ID  Y COMO FORANEA TABLA USERS
             $table->timestamps();
         });
     }
