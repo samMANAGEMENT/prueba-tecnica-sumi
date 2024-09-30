@@ -30,7 +30,6 @@
       label="Selecciona un Usuario" 
       :rules="[(v) => !!v || 'El usuario es requerido']" 
     />
-    <!-- Nuevo campo para seleccionar el estado -->
     <v-select 
       v-model="localTask.estado" 
       :items="states" 
@@ -59,7 +58,7 @@ export default {
       type: Array,
       required: true
     },
-    states: { // Añadir prop para los estados
+    states: { // PROP PARA STAE
       type: Array,
       required: true
     }
@@ -68,7 +67,7 @@ export default {
     return {
       valid: false,
       localTask: { ...this.task },
-      estado: this.task.state_id // Copia de la tarea para edición
+      estado: this.task.state_id
     };
   },
   methods: { // CREA TASK Y EMITO UN UPDATE

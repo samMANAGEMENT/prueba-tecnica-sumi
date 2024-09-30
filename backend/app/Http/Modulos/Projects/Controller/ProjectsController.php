@@ -56,14 +56,12 @@ class ProjectsController extends Controller
     public function eliminarProyecto($id) //LLAMA AL REPO PARA ELIMINAR UN PROYECT
     {
         try {
-            // Verifica si el proyecto tiene tareas asociadas
             $tareasCount = DB::table('tasks')->where('project_id', $id)->count();
 
             if ($tareasCount > 0) {
                 return response()->json(['error' => 'No se puede eliminar el proyecto porque tiene tareas asociadas.'], Response::HTTP_BAD_REQUEST);
             }
 
-            // Llamar al repositorio para eliminar el proyecto
             $eliminado = $this->projectsRepository->eliminarProyecto($id);
 
             if ($eliminado) {

@@ -136,7 +136,7 @@ export default {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        this.usuarios = data; // Asigna la lista de usuarios
+        this.usuarios = data;
       } catch (error) {
         console.error('Error al obtener usuarios:', error);
         this.usuarios = [];
@@ -195,7 +195,7 @@ export default {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        this.states = data; // Asegúrate de tener una propiedad states en el data()
+        this.states = data;
       } catch (error) {
         console.error('Error al obtener estados:', error);
         this.states = [];

@@ -19,10 +19,12 @@ class TaskController extends Controller
                 'nombre' => 'required|string|max:255',
                 'descripcion' => 'required|string',
                 'fecha_inicio' => 'required|date',
-                'fecha_final' => 'required|date|after:fecha_final',
+                'fecha_final' => 'required|date|after:fecha_inicio',
                 'project_id' => 'required|integer|exists:projects,id',
                 'user_id' => 'required|integer|exists:users,id',
+                'state_id' => 'nullable|integer|exists:states,id',
             ]);
+
             $this->taskRepository->CrearTask($validatedData);
             return response()->json('Se ha creado con éxito', Response::HTTP_CREATED);
         } catch (\Throwable $th) {
@@ -42,9 +44,11 @@ class TaskController extends Controller
                     'fecha_final' => $task->fecha_final,
                     'project' => $task->project ? $task->project->nombre : 'Sin proyecto',
                     'user' => $task->user ? $task->user->email : 'Sin usuario',
+                    'estado' => $task->state ? $task->state->nombre : 'Sin estado',
                 ];
             }));
         } catch (\Throwable $th) {
+            Log::error($th->getMessage());
             return response()->json(['error' => 'Error al listar tareas'], 500);
         }
     }
@@ -58,9 +62,10 @@ class TaskController extends Controller
                 'fecha_final' => 'nullable|date|after:fecha_inicio',
                 'project_id' => 'required|integer|exists:projects,id',
                 'user_id' => 'required|integer|exists:users,id',
+                'state_id' => 'nullable|integer|exists:states,id',
             ]);
 
-            $proyectoActualizado = $this->taskRepository->actualizarTask($id, $validatedData); //ACTIALIZA CON ID
+            $proyectoActualizado = $this->taskRepository->actualizarTask($id, $validatedData);
             return response()->json($proyectoActualizado, Response::HTTP_OK);
         } catch (\Exception $e) {
             if ($e->getMessage() === "La tarea no fue encontrada.") {
@@ -70,7 +75,6 @@ class TaskController extends Controller
             return response()->json(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-
 
     public function eliminarTask($id)
     {
